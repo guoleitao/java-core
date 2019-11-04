@@ -20,7 +20,7 @@ public class AlternateTest5 {
 
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
             ca.countDown();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -73,13 +73,13 @@ public class AlternateTest5 {
                 System.out.println(name + "   dowork  " + count);
                 count++;
             }
-            if (count > 10) {
-                return;
-            }
             if(i==0){
                 cb.countDown();
             } else if(i==1){
                 ca.countDown();
+            }
+            if (count > 10) {
+                return;
             }
             System.out.println(System.currentTimeMillis());
         }
