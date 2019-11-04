@@ -50,7 +50,7 @@ public class AlternateTest1 {
             if (count > 10) {
                 return;
             }
-            System.out.println(System.currentTimeMillis());
+//            System.out.println(System.currentTimeMillis());
         }
     }
 }

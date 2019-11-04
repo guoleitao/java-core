@@ -1,5 +1,7 @@
 package thread;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class AlternateTest2 {
 
     static int count = 0;
@@ -16,12 +18,12 @@ public class AlternateTest2 {
 
     }
 
-    public void main1(){
+    public void main1() {
         new MyThread1().start();
         new MyThread2().start();
     }
 
-     class MyThread1 extends Thread {
+    class MyThread1 extends Thread {
         @Override
         public void run() {
             this.setName("thread1");
@@ -30,11 +32,11 @@ public class AlternateTest2 {
 
         private void doWork() {
 
-            exec(0,this.getName());
+            exec(0, this.getName());
         }
     }
 
-     class MyThread2 extends Thread {
+    class MyThread2 extends Thread {
         @Override
         public void run() {
             this.setName("thread2");
@@ -42,7 +44,7 @@ public class AlternateTest2 {
         }
 
         private void doWork() {
-            exec(1,this.getName());
+            exec(1, this.getName());
         }
     }
 
@@ -69,41 +71,14 @@ public class AlternateTest2 {
 
     /**
      * 重入锁实现
+     *
      * @param i
      * @param name
      */
-//    public void exec(int i,String name){
-//        ReentrantLock lock = new ReentrantLock();
-//        while (true) {
-//            lock.lock();
-//            try {
-//                if (count % 2 == i) {
-//                    System.out.println(name + "   dowork  " + count);
-//                    count++;
-//                }
-//                if (count > 10) {
-//                    return;
-//                }
-//                System.out.println(System.currentTimeMillis());
-//            } finally {
-//                lock.unlock();
-//            }
-//
-//        }
-//    }
-
     public void exec(int i,String name){
+        ReentrantLock lock = new ReentrantLock();
         while (true) {
-            try {
-                if(count % 2==0){
-                    MyThread1.class.wait();
-                }else{
-                    MyThread2.class.wait();
-                }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            lock.lock();
             try {
                 if (count % 2 == i) {
                     System.out.println(name + "   dowork  " + count);
@@ -112,17 +87,14 @@ public class AlternateTest2 {
                 if (count > 10) {
                     return;
                 }
-                System.out.println(System.currentTimeMillis());
+//                System.out.println(System.currentTimeMillis());
             } finally {
-                if(count % 2==0){
-                    MyThread2.class.notify();
-                }else{
-                    MyThread1.class.notify();
-                }
+                lock.unlock();
             }
 
         }
     }
+
 }
 
 
