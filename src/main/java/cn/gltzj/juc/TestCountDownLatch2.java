@@ -20,6 +20,8 @@ public class TestCountDownLatch2 {
         int n = 5;
         CountDownLatch signal = new CountDownLatch(n);
 
+        long start = System.currentTimeMillis();
+
         for (int i = 0; i < n; i++) {
             final int j = i;
 
@@ -42,7 +44,7 @@ public class TestCountDownLatch2 {
         signal.await();
 
         //所有work执行完成,主线程在执行
-        System.out.println(" all thread is finished!");
+        System.out.println(String.format("所有线程执行完成所需时间: %s ms",(System.currentTimeMillis()-start)));
     }
 
 }
